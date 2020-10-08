@@ -12,6 +12,7 @@ class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasApiTokens;
 
+    public $username = '';
     /**
      * The attributes that are mass assignable.
      *
@@ -22,7 +23,12 @@ class User extends Authenticatable
         'email',
         'password',
         'last_name',
+        'username',
     ];
+
+    public function findForPassport($identifier) {
+        return $this->where('email', $identifier)/*->orWhere('username', $identifier)*/->first();
+    }
 
     /**
      * The attributes that should be hidden for arrays.

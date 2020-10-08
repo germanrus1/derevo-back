@@ -22,4 +22,11 @@ class MainController extends BaseController
 
         return $this->sendResponse(User::all());
     }
+
+    public function profile()
+    {
+        // получить api api авторизованного пользователя
+//        $user = User::find()
+//        return
+    }
 }
