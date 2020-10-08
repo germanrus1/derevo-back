@@ -15,13 +15,14 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-header('Access-Control-Allow-Origin: *');
-header('Access-Control-Allow-Methods: *');
-header('Access-Control-Allow-Headers: *');
+//header('Access-Control-Allow-Origin: *');
+//header('Access-Control-Allow-Methods: *');
+//header('Access-Control-Allow-Headers: *');
 
-Route::get('/', [MainController::class, 'index']);
+//Route::get('/', [MainController::class, 'index']);
 Route::post('register', [RegisterController::class, 'register']);
 
 Route::middleware('auth:api')->group( function () {
-    Route::resource('products', 'API\ProductController');
+    Route::resource('main', MainController::class);
+//    Route::resource('products', 'API\ProductController');
 });
