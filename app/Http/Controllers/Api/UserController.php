@@ -37,6 +37,18 @@ class UserController extends BaseController
         return $this->sendResponse($user->toArray(), 'Пользователь.');
     }
 
+    public function store(Request $request)
+    {
+        $input = $request->all();
+        $status = $this->loadImage('avatarFIle', $request);
+
+        if ($status['status']) {
+            return $this->sendResponse($status, $status['message']);
+        }
+
+        return $this->sendError($status['message']);
+    }
+
     public function update(Request $request)
     {
         $input = $request->all();
@@ -72,12 +84,32 @@ class UserController extends BaseController
 //        return
     }
 
-    public function loadImage($input, Request $request)
+    // Вынести в общий модуль
+    public function loadImage($fileName, Request $request)
     {
+        $input = $request->all();
         $validator = Validator::make($input, [
-            'avatarFile' => 'required|file',
+            'avatarFile' => 'required',
+//            'avatarFile' => [ // аналогичный вариант
+//                'required',
+//                Rule::dimensions()->maxWidth(1000)->maxHeight(500)->ratio(3 / 2),
+//            ],
         ]);
+        $user = Auth::user();
+        $folderPath = '/user_images/user_' . $user->getAuthIdentifier();
+        $fileNameBD = 'original_img.jpg';
+        // сохраняет в файл. store - хранит в store
+        $path = $request->file($fileName)
+            ->storeAs($folderPath, $fileNameBD, 'upload');
 
-        return $this->sendError('Ошибка при good.', $request);
+        if ($path != false) {
+            $user->avatar_url = $folderPath . '/' . $fileNameBD;
+            $user->update();
+            return ['status' => true, 'message' => $path, 'path' => 'upload/' . $path];
+            return ['status' => true, 'message' => 'Файл успешно загружен.'];
+        }
+
+        return ['status' => true, 'message' => $path];
+        return ['status' => true, 'message' => 'Произошла ошибка при загрузке файла.'];
     }
 }

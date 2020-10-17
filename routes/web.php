@@ -12,6 +12,24 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+//var_dump(env('APP_URL').'/storage');die;
+//Route::get('storage/{filename}', function ($filename)
+//{
+//    $path = storage_path('app/upload/' . $filename);
+//
+//    if (!File::exists($path)) {
+//        abort(404);
+//    }
+//
+//    $file = File::get($path);
+//    $type = File::mimeType($path);
+//
+//    $response = Response::make($file, 200);
+//    $response->header("Content-Type", $type);
+//
+//    return $response;
+//});
+
 //Route::get('/', function () {
 //    return view('welcome');
 //});
