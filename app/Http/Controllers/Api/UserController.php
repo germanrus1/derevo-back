@@ -43,7 +43,8 @@ class UserController extends BaseController
 
         $validator = Validator::make($input, [
             'name' => 'required',
-            'email' => 'required',
+            'email' => 'required|email',
+            'login' => 'required',
         ]);
 
         if($validator->fails()){
@@ -53,7 +54,13 @@ class UserController extends BaseController
         $user = Auth::user();
         $user->name = $input['name'];
         $user->email = $input['email'];
+        $user->login = $input['last_name'];
         $user->last_name = $input['last_name'];
+        $user->age = $input['age'];
+        $user->description = $input['description'];
+        $user->telephone = $input['telephone'];
+        $user->gender = $input['gender'];
+        $user->avatar_url = $input['avatar_url'];
         $user->update();
 
         return $this->sendResponse($user->toArray(), 'Данные изменены успешно!');
