@@ -19,15 +19,17 @@ class RegisterController extends BaseController
     {
         $validator = Validator::make($request->all(), [
             'name' => 'required',
+            'login' => 'required',
             'email' => 'required|email',
+            'password' => 'required|confirmed',
             'last_name' => '',
-//            'c_password' => 'required|same:password',
         ]);
         if($validator->fails()){
-            return $this->sendError('Неправильные данные.', $validator->errors());
+            return $this->sendError('Неправильно введены данные.', $validator->errors());
         }
+
         $input = $request->all();
-        $input['password'] = '123123'; // for test
+
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
         $success['token'] =  $user->createToken('MyApp')->accessToken;

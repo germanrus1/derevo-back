@@ -24,6 +24,12 @@ class User extends Authenticatable
         'password',
         'last_name',
         'username',
+        'login',
+        'avatar_url',
+        'description',
+        'telephone',
+        'gender',
+        'age',
     ];
 
     public function findForPassport($identifier) {
