@@ -72,7 +72,6 @@ class UserController extends BaseController
         $user->description = $input['description'];
         $user->telephone = $input['telephone'];
         $user->gender = $input['gender'];
-        $user->avatar_url = $input['avatar_url'];
         $user->update();
 
         return $this->sendResponse($user->toArray(), 'Данные изменены успешно!');
