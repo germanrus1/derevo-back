@@ -1,8 +1,9 @@
 <?php
 
+use App\Http\Controllers\API\TreeController;
+use App\Http\Controllers\API\TreeItemController;
 use App\Http\Controllers\API\UserController;
 use App\Http\Controllers\API\RegisterController;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +20,6 @@ Route::post('register', [RegisterController::class, 'register']);
 
 Route::middleware('auth:api')->group( function () {
     Route::resource('user', UserController::class);
+    Route::resource('tree', TreeController::class);
+    Route::resource('tree-item', TreeItemController::class);
 });

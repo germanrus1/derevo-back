@@ -28,6 +28,7 @@ class MainController extends BaseController
     public function show()
     {
         $user = Auth::user();
+
         if (is_null($user)) {
             return $this->sendError('Пользователь не найден.');
         }

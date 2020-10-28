@@ -39,7 +39,6 @@ class UserController extends BaseController
 
     public function store(Request $request)
     {
-        $input = $request->all();
         $status = $this->loadImage('avatarFIle', $request);
 
         if ($status['status']) {
