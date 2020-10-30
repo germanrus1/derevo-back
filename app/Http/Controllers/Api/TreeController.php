@@ -73,17 +73,9 @@ class TreeController extends BaseController
     public function update(Request $request, Tree $tree)
     {
         $input = $request->all();
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
-        ]);
-        if($validator->fails()){
-            return $this->sendError('Ошибка входных параметров.', $validator->errors());
-        }
-        $tree->name = $input['name'];
-        $tree->detail = $input['detail'];
-//        $tree->save();
-        return $this->sendResponse($tree->toArray(), 'Дерево успешно изменен.');
+
+        $tree->update($input);
+        return $this->sendResponse($tree, 'Успешно изменен.');
     }
     /**
      * Destroy - удаялет элемен из БД.

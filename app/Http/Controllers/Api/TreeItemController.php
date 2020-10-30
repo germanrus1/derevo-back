@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use App\Models\Tree;
 use Illuminate\Http\Request;
 use App\Http\Controllers\API\BaseController as BaseController;
 use App\Models\TreeItem;
@@ -9,21 +10,38 @@ use Validator;
 
 class TreeItemController extends BaseController
 {
+
+    public function treeItemList($id)
+    {
+        if ($id) {
+            $tree = Tree::find($id);
+            $treeItemList = TreeItem::where('tree_id', $id)->get();
+
+            return $this->sendResponse(
+                [
+                    'tree' => $tree,
+                    'items' => $treeItemList->toArray(),
+                ],
+                'Список людей.'
+            );
+        } else {
+            return $this->sendError('Отсутсвтует id дерева',);
+        }
+    }
     /**
      * Index - список всех людей в дереве.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        $input = $request->all();
-
-        if ($input['tree_id']) {
-            $products = TreeItem::find(['tree_id' => $input['tree_id']]);
-            return $this->sendResponse($products->toArray(), 'Список людей.');
-        } else {
-            return $this->sendError('Отсутсвтует id дерева',);
-        }
+//        if ($input['tree_id']) {
+//            $treeItems = TreeItem::find(['tree_id' => $input['tree_id']]);
+//            return $this->sendResponse($treeItems->toArray(), 'Список людей.');
+//        } else {
+//            return $this->sendError('Отсутсвтует id дерева',);
+            return $this->sendError('Метод не работает. Доделать или удалить метод',);
+//        }
     }
     /**
      * Store - добавляет в БД.
@@ -34,14 +52,13 @@ class TreeItemController extends BaseController
     public function store(Request $request)
     {
         $input = $request->all();
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
-        ]);
-        if($validator->fails()){
-            return $this->sendError('Ошибка входных параметров.', $validator->errors());
+
+        if(empty($input)){
+            return $this->sendError('Ошибка входных параметров.', $input);
         }
+
         $treeItem = TreeItem::create($input);
+
         return $this->sendResponse($treeItem->toArray(), 'Успешно добавлен.');
     }
     /**
@@ -50,7 +67,7 @@ class TreeItemController extends BaseController
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Request $request, $id)
     {
         $treeItem = TreeItem::find($id);
         if (is_null($treeItem)) {
@@ -68,17 +85,9 @@ class TreeItemController extends BaseController
     public function update(Request $request, TreeItem $treeItem)
     {
         $input = $request->all();
-        $validator = Validator::make($input, [
-            'name' => 'required',
-            'detail' => 'required'
-        ]);
-        if($validator->fails()){
-            return $this->sendError('Ошибка входных параметров.', $validator->errors());
-        }
-        $treeItem->name = $input['name'];
-        $treeItem->detail = $input['detail'];
-        $treeItem->save();
-        return $this->sendResponse($treeItem->toArray(), 'Успешно изменен.');
+
+        $treeItem->update($input);
+        return $this->sendResponse($treeItem, 'Успешно изменен.');
     }
     /**
      * Destroy - удаялет элемен из БД.

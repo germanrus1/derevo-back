@@ -21,6 +21,7 @@ class TreeItem extends Model
         'adopted',
         'avatar_url',
         'description',
+        'tree_id',
     ];
 
 

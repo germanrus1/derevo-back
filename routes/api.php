@@ -21,5 +21,6 @@ Route::post('register', [RegisterController::class, 'register']);
 Route::middleware('auth:api')->group( function () {
     Route::resource('user', UserController::class);
     Route::resource('tree', TreeController::class);
-    Route::resource('tree-item', TreeItemController::class);
+    Route::get('treeItem/list/{id}/', 'App\Http\Controllers\API\TreeItemController@treeItemList');
+    Route::resource('treeItem', TreeItemController::class);
 });
